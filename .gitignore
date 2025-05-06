@@ -1,0 +1,8 @@
+# output of Latex compiling
+**/report/out_dir/
+
+# Quantum Esspresso Outputs
+**/*/Si.scf_ecutw*
+
+# LAMMPS outputs
+**/*/temp*
