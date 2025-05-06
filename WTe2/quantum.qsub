@@ -1,0 +1,10 @@
+#!/bin/bash
+#SBATCH -J QE_WTe2_mono
+#SBATCH -o %j.out
+#SBATCH -p parallel
+#SBATCH -N 1
+#SBATCH -n 12
+#SBATCH -t 00:03:00
+
+module load QuantumESPRESSO/7.1-foss-2022a
+srun pw.x < wte2.scf.in > wte2.scf.out
