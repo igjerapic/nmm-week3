@@ -56,114 +56,58 @@
 \thispagestyle{firststyle}
 \newpage
 \section{Assignment 1: DFT calculation of WTe2 monolayer}
-\begin{enumerate}
-  \item Bravais lattice is rectangular: The two W atoms (grey balls) do not lie in the x-y plane, but have an angle of 4.27deg between them. Makes sense due to {\color{red} MATCHING WITH REFERENCES}
+Self-consistant field calculation
+\begin{itemize}
+    \item Bravais lattice is rectangular: The two W atoms (grey balls) do not lie in the x-y plane, but have an angle of 4.27deg between them. Makes sense due to {\color{red} MATCHING WITH REFERENCES}
   
-  \item Supercell constructed using the Cell dimensions ?Flag? with dimensions 3.5 x 6.28 x 30 \AA. 
-  \item Distance between monolayers is 30 \AA, as expected 
+    \item Supercell constructed using the Cell dimensions ?Flag? with dimensions 3.5 x 6.28 x 30 \AA. 
+    \item Distance between monolayers is 30 \AA, as expected from supercell
+    \item Running for 3 minutes showed approx 40 seconds per iteration. The run time was then set to 30 minutes assuming that it would take max 15 iterations each of 1 min long. 
+  \end{itemize}
+
+  Band structure
+  \begin{itemize}
+    \item No nscf was necessary as the kpoints were interpolated with gaussian smearing
+    \item Show image of points taken using xcrysden
+    \item for plotting check out \url{https://github.com/quantumNerd/Quantum-Espresso-Tutorial-2019-Projects/tree/master/tools/plot_band} 
+  \end{itemize}
   The visualization of the \texttt{Si.sci.in} input file is shown in Figure \ref{fig:ass1_cryst}. 
   \begin{figure}[h]
     \centering 
-    \includegraphics[width = 0.7\textwidth]{figs/ass1_Si_cryst.png}
+    \includegraphics[width = 0.7\textwidth]{example-image-a}
     \caption{\textbf{(a)} The conventional FCC unit cell with a two atom basis. The lattice constant was found to be 5.43 \AA. with a bond angle of 90$^\circ$. (b) The primitive unit cell obtained from the input file. A lattice constant of 3.8396 {\AA} was found, with a bond angle of 60$^\circ$.}
     \label{fig:ass1_cryst}
   \end{figure}
 
-  \item Visualize LAMMPS simulation 
-  
-  An overview of the total number of bonds and atoms can for each output file can be found in Table \ref{tab:ass1_lammps-bonds} and \ref{tab:ass1_lammps-atoms}, respectively.
-  The types of atoms are clarified by considering a single isolated molecule in Figure \ref{fig:ass1_molecules}. Mainly, Type 1 corresponds to the backbone of the molecule, and Type 2 and 4 correspond to reactive atoms. Further analysis of the \texttt{half\_reacted.data} file showed that Type 3 atoms correspond to reacted Type 2 atoms, see Figure \ref{fig:ass1_molecules}. This reaction is also captured in the introduction of Type 2 bonds, as seen by the number of Type 2 bonds being exactly half of the number of Type 3 atoms. It is important to note, that this suggests that the Type 2 bond is restricted to two atoms. 
-
-  \begin{table}[h]
-    \caption{An overview of the number of each bond type for the output files considered.}
-    \label{tab:ass1_lammps-bonds}
-    \centering
-    \begin{tabular}{cccc}
-      \hline
-    \textbf{Bond Type}      & \textbf{No-reacted}     & \textbf{Half-reacted}   & \textbf{Full-reacted}   \\
-    \hline
-    1 & 216000 & 216000 & 216000 \\
-    2 & 0      & 10947  & 18861  \\
-    3 & 0      & 0      & 0      \\
-    4 & 0      & 0      & 0      \\ \hline
-    \textbf{Total} & 216000 & 226947 & 234861 \\ \hline
-    \end{tabular}
-  \end{table}
-
-  \begin{table}[h]
-    \caption{An overview of the number of each atom type for the output files considered.}
-    \label{tab:ass1_lammps-atoms}
-    \centering
-    \begin{tabular}{cccc}
-      \hline
-    \textbf{Atom Type}      & \textbf{No-reacted}     & \textbf{Half-reacted}   & \textbf{Full-reacted}   \\
-    \hline
-    1 & 156000 & 156000 & 156000 \\
-    2 & 48000  & 26106  & 10278  \\
-    3 & 0      & 21894  & 37722  \\
-    4 & 24000  & 24000  & 24000  \\ \hline
-    \textbf{Total} & 228000 & 228000 & 228000 \\ \hline
-    \end{tabular}
-  \end{table}
-  
-  Using the \texttt{expression selection} feature in \texttt{Ovito} on the \texttt{no\_reaction.data} file, a single, non-bonded, molecule was found to be made up of 19 atoms. Further clustered-by-bonds analysis, Figure \ref{fig:cluster_analysis}, showed that the initial no-reaction configuration consisted of 12000 molecules. This also demonstrates that the system shows no polydispersity as 1200 $\times$ 19 gives the total number of atoms in the system. Similar clustering analysis on the half-reacted system revealed 1418 clusters with the largest consisting of 8123 molecules (154337) atoms while a single molecule was found for the full-reacted system provided by the \texttt{full\_reacted.data} file. 
-
-  Instead of full molecules, the number of new chains formed by the reactions can be considered by first selecting the reacted atoms (Type 3) along with the atom connecting it to the main chain (Type 4) and then performing a similar cluster-by-bonds analysis, Figure \ref{fig:ass1_full_reaction}(a). 
-  Such analysis reveals 6424 "clusters", with the largest consisting of 396 atoms. The distribution of the new chain sizes are shown in Figure \ref{fig:ass1_full_reaction}(b).
-
-  \begin{figure}[htbp]
-    \centering 
-    \includegraphics[width = 0.7\textwidth]{figs/ass1_molecules.png}
-    \caption{Two isolated molecules demonstrated each atom type. The left shows an isolated molecule extracted from the non-reacted system, while the right was extracted from the half-reacted system.}
-    \label{fig:ass1_molecules}
-  \end{figure}
-  \begin{figure}[htbp]
-    \centering 
-    \includegraphics[width = 0.9\textwidth]{figs/ass1_molecule_clusters.png}
-    \caption{Clusters of bonded atoms, considered molecules, as determined using \texttt{cluster by bonds} in \texttt{Ovito} on the different systems considered. Different colors represent a different molecule.}
-    \label{fig:cluster_analysis}
-  \end{figure}
-  \begin{figure}[htbp]
-    \centering 
-    \includegraphics[width = 0.7\textwidth]{figs/ass1_full-reaciton.png}
-    \caption{A cluster analysis by bonds for selecting atoms of Type 3 and Type 4. (a) Shows the different clusters (bonds only) with each color representing a separate cluster. (b) Shows the distribution of the cluster sizes using 10 bins. }
-    \label{fig:ass1_full_reaction}
-  \end{figure}
-  
-\end{enumerate}
-
 \newpage
-\section{Assignment 2: First DFT Simulation}
-\begin{enumerate}
-  \item Energy Convergence
-  
-  The final total energy from the original input file with a convergence threshold of \texttt{1d-8}, kinetic energy cutoff of 40 Ry, and 4 k-points in each direction was found to be \texttt{-20.43868608 Ry}.
-  This result was achieved after seven iterations as shown in Figure \ref{fig:ass2_conv-thr}(a). The final energy can be more accurate by having a stricter convergence threshold, \texttt{conv\_thr}, which is shown in Figure  \ref{fig:ass2_conv-thr}(b) for \texttt{conv\_thr=1.0d-12}. For the stricter convergence threshold, convergence is achieved after 10 iterations. 
-
-  \begin{figure}[h]
-    \centering 
-    \includegraphics[width = 0.7\textwidth]{figs/ass2_conv-thr.png}
-    \caption{The total energy of the simulation as a function of the iteration of the self-consistent field calculation for a convergence threshold of (a) \texttt{1d-8} and (b) \texttt{1d-12}. }
-    \label{fig:ass2_conv-thr}
-  \end{figure}
-
-  \item Effect of Kinetic energy cutoff \texttt{ecutwfc} and number of k-points \texttt{nk}
-  Varying both the kinetic energy cutoff and number of k-points has a significant effect on the accuracy of the final total energy as seen in Figure \ref{fig:ass2_energy-ecut_nks}. 
-  Mainly, increasing the number of k-points in each direction from 2 to 8 lead to a 0.01 Ry decrease in the total energy, while increasing \texttt{ecutwfc} from 20.0 Ry to 50.0 Ry lead to a reduction by 0.04 Ry. Therefore, increasing either one leads to a more accurate final energy calculation.   
-  
-    \begin{figure}[h]
-      \centering 
-      \includegraphics[width = 0.7\textwidth]{figs/ass2_energy-ecut_nks.png}
-      \caption{The total energy of the simulation as a function of (a) the number of k-points for \texttt{ecutwfc=40.0} and (b) the kinetic energy cutoff for \texttt{nk=4}. In both cases, the convergence threshold was kept at \texttt{1d-8}.}
-      \label{fig:ass2_energy-ecut_nks}
-    \end{figure}
-
-\end{enumerate}
+\section{Assignment 2: Graphene}
+\begin{itemize}
+  \item graphene supercell using graphite structure from week2
+  \item Use xcrysden to inspect it
+  \item band structure along M-G-K-M direction. Compare with literature 
+\end{itemize}
 
 
+\section{Assignment 3: Gr/WTe2 Heterostructure}
+3a)
+\begin{itemize}
+  \item Analysis of wte2-gr.relax.in file
+  \item Analysis of respective structure:
+  \begin{itemize}
+    \item hexagonal or rectangular: 
+    
+    Was found to be rectangular 
+    \item twisting angle
+    \item number of graphene unit cells
+  \end{itemize}
+\end{itemize}
 
-\newpage
-\section{Assignment 3: First LAMMPS Simulations}
+3b)
+\begin{itemize}
+  \item Use own files for graphene and WTe2 monolayers to create heterostructure yourself
+  \item Open files using xcrysden and save as xsf. Then check out \url{https://www.youtube.com/watch?v=vAc_vlSfQT0} to generate heterostructure 
+\end{itemize}
+
 
 The thermodynamic data for the system ran at a temperature of 1.0 and a packing fraction of 0.45 is shown in Figure \ref{fig:ass3_thermo}. As all parameters are relatively stable over the simulation, it can be said that the system is in equilibrium. 
 
