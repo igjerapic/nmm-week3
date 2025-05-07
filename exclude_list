@@ -1,0 +1,7 @@
+.git/
+*.xml
+**/*.wfc*
+**/*.save
+exclude_list
+report/
+*.png
