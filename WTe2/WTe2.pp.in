@@ -1,5 +1,0 @@
-&BANDS
-  prefix='WTe2',
-  outdir='./',
-  filband='WTe2.dat'
-/
