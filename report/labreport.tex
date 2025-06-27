@@ -36,11 +36,11 @@
 
 
 
-\title{Nanoscale Material Modelling
+\title{Nanoscale Material Modeling
 \\
-\normalsize{Week 1}} % Main title and sub title. 
+\normalsize{Week 3}} % Main title and sub title. 
 
-\author{Ilija A. Gjerapić, S4437586; \href{mailto:i.a.gjerapic@student.rug.nl}{i.a.gjerapic@student.rug.nl}; \href{https://github.com/igjerapic/nmm-week1/}{@github} } % Name, student number, email
+\author{Ilija A. Gjerapić, S4437586; \href{mailto:i.a.gjerapic@student.rug.nl}{i.a.gjerapic@student.rug.nl}; \href{https://github.com/igjerapic/nmm-week3/}{@github} } % Name, student number, email
 
 \supervisors{prof. dr. A. Giuntoli, prof. dr. J. Slawinska}
 
@@ -109,111 +109,6 @@ Self-consistant field calculation
 \end{itemize}
 
 
-The thermodynamic data for the system ran at a temperature of 1.0 and a packing fraction of 0.45 is shown in Figure \ref{fig:ass3_thermo}. As all parameters are relatively stable over the simulation, it can be said that the system is in equilibrium. 
-
-\begin{figure}[htpb]
-  \centering 
-  \includegraphics[width = 0.9\textwidth]{figs/ass3_thermo.png}
-  \caption{The thermodynamic data over time as extracted from the \texttt{log.lammps} file for a system at temperature $T=1.0$ and packing fraction \texttt{eta=0.45}. (a) is the temperature of the system, (b) the pressure of the system, and (c) the Kinetic and potential energy of the system.}
-  \label{fig:ass3_thermo}
-\end{figure}
-
-The effect of different temperatures and packing fractions on the structure and dynamics of the system are demonstrated in Figures \ref{fig:ass3_struc} and \ref{fig:ass3_rdf-msd}. 
-The structural visualization using the \texttt{Common neighbor} analysis in \texttt{Ovito}, Figure \ref{fig:ass3_struc} suggests that for a packing fraction of 0.45, there is no crystalization and that the systems are liquid. This is supported by the RDFs of these systems, Fig \ref{fig:ass3_rdf-msd}(a), demonstrating a large peak at $r/\sigma = 1$ followed by smaller decaying peaks. However, it is noted that the MSD of T0.5-eta0.45, Figure \ref{fig:ass3_rdf-msd}(b) shows an inflection point and short plateau starting at $\tau\approx 1.0$, followed by a super diffusive regime, which is characteristic of glassy/caging dynamics.  
-
-Additionally, for packing fractions of 0.6 and 0.7 at temperature 1.0 show crystal domains mainly of HCP and FCC structure. This is also supported by the sharp peaks observed in the corresponding RDFs, Figure \ref{fig:ass3_rdf-msd}(c). Moreover, both MSDs for eta=0.6,0.7, Figure \ref{fig:ass3_rdf-msd}(d) show a strong plateau after the ballistic regime, which is indicative of a solid like material. 
-
-\begin{figure}[htpb]
-  \centering 
-  \includegraphics[width = 0.6\textwidth]{figs/ass3_struct.pdf}
-  \caption{Visualizations of the varied parameters for the simple LAMMPS system. (Top) Varying the temperature $T$ for a constant packing fraction \texttt{eta}. (Middle) The color scheme for the structure offered by the \texttt{Common neighbor} analysis in \texttt{Ovito}. (Bottom) Various packing fractions for a constant temperature $T$. }
-  \label{fig:ass3_struc}
-\end{figure}
-\begin{figure}[htpb]
-  \centering 
-  \includegraphics[width = 0.8\textwidth]{figs/ass3_rdf-msd.pdf}
-  \caption{The RDF and MSD for the samples in Figure \ref{fig:ass3_struc}. (a-b) correspond to a fixed packing fraction of 0.45 while (c-d) correspond to a fixed temperature of 1.0. For the fixed packing fraction, all systems show a liquid characteristic, with glassy behavior emerging at T=0.5. Increasing packing fraction leads to a crystal grains, with more regular packing showing for a packing fraction of 0.6. }
-  \label{fig:ass3_rdf-msd}
-\end{figure}
-
-\section{Assignment 4: Benchmarking}
-
-\begin{enumerate}
-  \item Benchmarking Quantum Espresso DFT calculation
-  
-  \begin{table}[h]
-    \caption{An overview of the total wall time in seconds for different number of processors used on the parallel partition on Habrok for 4 and 16 k-points (nk). For each simulation \texttt{ecutwfc=40.0 Ry}, \texttt{conv\_thr=1d-8} was used. Each simulation provided the same lattice constant as mentioned in Figure \ref{fig:ass1_cryst}(b), within the limit provided by \texttt{xcrysden}. From Figure \ref{fig:ass2_energy-ecut_nks}(a), the accuracy in final energy increased the most when moving to \texttt{nk=4}, thus, extra parallelization here is not optimal: the calculation using 12 processors and \texttt{nk=4} is most optimal. }
-    \label{tab:ass4_DFT-benchmark}
-    \centering
-    \begin{tabular}{c|ccc}
-      \hline
-      \multirow{2}{*}{nk} & \multicolumn{3}{c}{Number Processors} \\
-                          & 2           & 12         & 64         \\ \hline
-      4                   & 0.89        & 0.63       & 0.53       \\
-      16                  & 17.34       & 9.93       & 2.90       \\ \hline
-      \end{tabular}
-  \end{table}
-
-\item Benchmarking LAMMPS MD Simulations
-
-\begin{table}[htbp]
-  \caption{The performance of the LAMMPS simulation of 4096 particles with one task per node for increasing cut-off distances of the LJ potential.}
-  \label{tab:ass4_lammps-lj}
-  \centering
-  \begin{tabular}{cc} \hline
-    \textbf{\texttt{lj\_cut}} $\bm{\sigma}$ & \textbf{Performance (steps/s)}\\
-    \hline
-    1.12                        & 1260.628                        \\
-    2.0                         & 450.479                         \\
-    4.0                         & 90.332                          \\
-    6.0                         & 32.678                          \\ \hline
-    \end{tabular}
-\end{table}
-
-\begin{table}[htbp]
-  \caption{The performance of the LAMMPS simulation of 4096 particles with one task per node for increasing cut-off distances of the \texttt{lj/cut/coul/cut} potential. \texttt{lj\_cut} was kept at 1.12 $\sigma$. Each particle had a charge of +1.}
-  \label{tab:ass4_lammps-coul}
-  \centering
-  \begin{tabular}{cc} \hline
-    \textbf{\texttt{coul\_cut}} $\bm{\sigma}$ & \textbf{Performance (steps/s)}\\
-    \hline
-    1.12                        & 1226.768                        \\
-    2.0                         & 398.870                        \\
-    4.0                         & 80.435                          \\
-    6.0                         & 29.116                          \\ \hline
-    \end{tabular}
-\end{table}
-
-\begin{table}[htb]
-  \caption{The performance of the LAMMPS simulation of $N$ particles with one task per node for \texttt{lj/cut} interactions with a cut-off distances of 1.12 $\sigma$ and \texttt{lj/cut/coul/cut} interactions with cut-off distances of 1.12 and 6.0 $\sigma$. For the \texttt{lj/cut/coul/cut} interactions, each particle had a charge of +1.}
-  \label{tab:ass4_lammps-npart}
-  \centering
-  \begin{tabular}{ccc} \hline
-    \textbf{\texttt{N}} & \textbf{steps/s (lj/cut) }& \textbf{steps/s (lj/cut/coul/cut)}\\
-    \hline
-    4096                        & 1260.628      &       29.116           \\
-    8192                         & 627.877       &      14.173           \\
-    12288                         & 419.067      &      9.787              \\
-    16384                         & 297.377       &     7.012              \\ \hline
-    \end{tabular}
-\end{table}
-
-\begin{table}[htb]
-  \caption{The performance of the LAMMPS simulation of 4096 particles with $M$ tasks per node (processors) for \texttt{lj/cut} interactions with a cut-off distances of 1.12 $\sigma$ and \texttt{lj/cut/coul/cut} interactions with cut-off distances of 1.12 and 6.0 $\sigma$. For the \texttt{lj/cut/coul/cut} interactions, each particle had a charge of +1. 
-  Comparing the performance values to those obtained in the first row of Table \ref{tab:ass4_lammps-lj} and last row of Table \ref{tab:ass4_lammps-coul}, shows that parallelization of LAMMPS on Habrok can lead to substantial increases in efficiency.}
-  \label{tab:ass4_lammps-nproc}
-  \centering
-  \begin{tabular}{ccc} \hline
-    \textbf{\texttt{M}} & \textbf{steps/s (lj/cut) }& \textbf{steps/s (lj/cut/coul/cut)}\\
-    \hline
-    2                        & 2449.352      &       57.569          \\
-    4                         & 4124.183       &      111.287           \\
-    8                         & 6796.371      &      196.499              \\
-    16                         & 10838.676      &     417.952              \\ 
-    32                        &  9851.291        &  604.731\\ \hline
-    \end{tabular}
-\end{table}
-\end{enumerate}
 
 \newpage
 % \printbibliography
