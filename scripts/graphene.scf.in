@@ -1,0 +1,30 @@
+ &control
+    calculation = 'scf'
+    restart_mode='from_scratch',
+    prefix= 'graphene',
+    pseudo_dir = './'
+    outdir = './'
+ /
+ &system    
+    ibrav= 4,
+    celldm(1)= 4.641, 
+    celldm(3)= 13.0,   ! Approximately 30 angstrom between monolayers
+    nat=  2, ntyp= 1, 
+    ! Following copies what was done for  WTe2 file
+    occupations = 'smearing', smearing = 'gaussian', degauss = 0.01,
+    ecutwfc = 60.0,
+    ecutrho = 600.0,
+ /
+ &electrons ! Same as week1 graphite
+    mixing_mode = 'plain'
+    mixing_beta = 0.7 
+    conv_thr =  1.0d-8
+ /
+
+ATOMIC_SPECIES
+  C  12.011  C.pbe-n-kjpaw_psl.1.0.0.UPF
+ATOMIC_POSITIONS (alat)
+  C      0.000 0.000 0.5
+  C      0.000 0.577 0.5
+K_POINTS {automatic}
+  12 12 12 0 0 0
