@@ -1,8 +1,27 @@
 # output of Latex compiling
 **/report/out_dir/
 
+report/figs/*.svg
+
+# slurm submission and outputs 
+**/*/*.qsub
+**/*/*1*.out
+
+# rsync exclude
+exclude-list
+
+# Bands outputs
+**/Bands/*.dat
+**/Bands/*.rap
+
+# WTe2 assignment:
+WTe2/*.xsf
+WTe2/*.kpf
+WTe2.dat
+WTe2.dat.rap
+
 # Quantum Esspresso Outputs
-**/*/Si.scf_ecutw*
+*.scf.out
 
 # LAMMPS outputs
 **/*/temp*
